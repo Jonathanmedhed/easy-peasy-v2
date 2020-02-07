@@ -156,7 +156,7 @@ router.post('/send-email', auth, async (req, res) => {
     secure: true,
     auth: {
       user: 'easypeasyserviceapp@gmail.com',
-      pass: 'easy2016234'
+      pass: 'M4ld1t4s34-05!'
     }
   });
 
