@@ -1,0 +1,29 @@
+{
+  "name": "easypeasy",
+  "version": "1.0.0",
+  "description": "Ordering products app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrency": "^0.1.4",
+    "concurrently": "^5.0.1",
+    "config": "^3.2.4",
+    "express": "^4.17.1",
+    "express-validator": "^6.3.0",
+    "gravatar": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.1",
+    "nodemailer": "^6.4.2",
+    "nodemon": "^2.0.2",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "author": "Jonathan Medina",
+  "license": "MIT"
+}
