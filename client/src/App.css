@@ -359,13 +359,16 @@ html {
 }
 
 .form-sm-footer {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
   -ms-flex-pack: center;
-  justify-content: center;
-  padding-bottom: 0.5rem
+  justify-content: space-evenly;
+  padding-bottom: 0.5rem;
+  width: 100%;
+}
+
+.form-sm-footer .btn {
+  width: 6rem;
+  margin: 0;
 }
 
 .table-container {
@@ -756,6 +759,23 @@ img {
   .landing {
     margin-top: 0rem;
   }
+
+  .landing .x-large {
+    font-size: 2.5rem;
+  }
+
+  .landing .lead {
+    font-size: 1.1rem;
+  }
+
+  .landing .landing-inner {
+    width: 22rem;
+    height: 15rem;
+    margin-top: 9rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
   .landing .buttons {
     display: flex;
     justify-content: space-between;
@@ -881,7 +901,7 @@ img {
   }
   /* Tables */
   .table-container {
-    max-width: 18rem;
+    max-width: 20rem;
     overflow-x: auto;
     overflow-y: hidden;
     font-size: 1rem;

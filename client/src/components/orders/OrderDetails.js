@@ -102,7 +102,6 @@ function OrderDetails({ match }) {
                   <thead class='bg-primary'>
                     <th>Product</th>
                     <th>Brand</th>
-                    <th>Unit</th>
                     <th>Qty</th>
                   </thead>
                   <tbody>
@@ -114,8 +113,7 @@ function OrderDetails({ match }) {
                           <tr>
                             <td>{product.name}</td>
                             <td>{product.brand}</td>
-                            <td>{product.unit}</td>
-                            <td>{product.qty}</td>
+                            <td>{product.qty} x {product.unit}</td>
                           </tr>
                         );
                       }
