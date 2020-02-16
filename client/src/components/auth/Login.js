@@ -47,6 +47,7 @@ const Login = ({ login, isAuthenticated }) => {
                   onChange={e => onChange(e)}
                   required
                 />
+                <label>Test: Testuser@gmail.com</label>
               </div>
 
               <div className='form-group'>
@@ -59,6 +60,7 @@ const Login = ({ login, isAuthenticated }) => {
                   onChange={e => onChange(e)}
                   minLength='6'
                 />
+                <label>Test: Pass1234!</label>
               </div>
 
               <Alert />

@@ -295,6 +295,12 @@ html {
   margin: 1.2rem 0
 }
 
+.form-group label{
+  color: white;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
 .form-text {
   display: block;
   margin-top: 0.3rem;
@@ -792,6 +798,11 @@ img {
     width: 12rem;
     margin: auto;
     padding: 0.5rem;
+  }
+
+  .form-group label{
+    color: white;
+    margin-top: 1rem;
   }
 
   .container {
