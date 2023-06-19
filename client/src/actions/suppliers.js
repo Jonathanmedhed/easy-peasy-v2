@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { setAlert } from './alerts';
+import axios from "axios";
+import { setAlert } from "./alerts";
 
 import {
   SUPPLIER_ERROR,
@@ -8,122 +8,130 @@ import {
   UPDATE_SUPPLIER,
   UPDATE_PRODUCT,
   PRODUCT_ERROR,
-  GET_SUPPLIER
-} from '../actions/types';
+  GET_SUPPLIER,
+} from "../actions/types";
+import { API } from "../costants";
 
 // Get supplier
-export const getSupplierById = ({id}) => async dispatch => {
-  try {
-    console.log("action running")
-    const res = await axios.get(`/api/supplier/${id}`);
-    console.log(res.data);
-    dispatch({
-      type: GET_SUPPLIER,
-      payload: res.data
-    });
-  } catch (err) {
-    dispatch({
-      type: SUPPLIER_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
-  }
-};
-
-// Create supplier
-export const createSupplier = ({
-  contactName,
-  companyName,
-  email
-}) => async dispatch => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
+export const getSupplierById =
+  ({ id }) =>
+  async (dispatch) => {
+    try {
+      console.log("action running");
+      const res = await axios.get(`/${API}/supplier/${id}`);
+      console.log(res.data);
+      dispatch({
+        type: GET_SUPPLIER,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: SUPPLIER_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
     }
   };
 
-  const body = JSON.stringify({ contactName, companyName, email });
+// Create supplier
+export const createSupplier =
+  ({ contactName, companyName, email }) =>
+  async (dispatch) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-  try {
-    const res = await axios.post('/api/supplier', body, config);
+    const body = JSON.stringify({ contactName, companyName, email });
 
-    dispatch({
-      type: CREATE_SUPPLIER,
-      payload: res.data
-    });
-    
-  } catch (err) {
-    const errors = err.response.data.errors;
+    try {
+      const res = await axios.post(`/${API}/supplier`, body, config);
 
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      dispatch({
+        type: CREATE_SUPPLIER,
+        payload: res.data,
+      });
+    } catch (err) {
+      const errors = err.response.data.errors;
+
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      }
+      dispatch({
+        type: SUPPLIER_ERROR,
+      });
     }
-    dispatch({
-      type: SUPPLIER_ERROR
-    });
-  }
-};
+  };
 
 // Delete supplier
-export const deleteSupplier = id => async dispatch => {
+export const deleteSupplier = (id) => async (dispatch) => {
   try {
-    const res = await axios.delete(`/api/supplier/${id}`);
+    const res = await axios.delete(`/${API}/supplier/${id}`);
 
     dispatch({
       type: DELETE_SUPPLIER,
-      payload: res.data
+      payload: res.data,
     });
 
-    dispatch(setAlert('Supplier Removed', 'success'));
+    dispatch(setAlert("Supplier Removed", "success"));
   } catch (err) {
     dispatch({
       type: SUPPLIER_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 // Delete product
-export const deleteProduct = (id, product_id) => async dispatch => {
+export const deleteProduct = (id, product_id) => async (dispatch) => {
   try {
-    const res = await axios.delete(`/api/supplier/product/${id}/${product_id}`);
+    const res = await axios.delete(
+      `/${API}/supplier/product/${id}/${product_id}`
+    );
 
     dispatch({
       type: UPDATE_PRODUCT,
-      payload: res.data
+      payload: res.data,
     });
 
-    dispatch(setAlert('Product Removed', 'success'));
+    dispatch(setAlert("Product Removed", "success"));
   } catch (err) {
     dispatch({
       type: PRODUCT_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 // Add product
-export const addProduct = ({ id, name, brand, unit }) => async dispatch => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
+export const addProduct =
+  ({ id, name, brand, unit }) =>
+  async (dispatch) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const body = JSON.stringify({ name, brand, unit });
+
+    try {
+      const res = await axios.post(
+        `/${API}/supplier/product/${id}`,
+        body,
+        config
+      );
+
+      dispatch({
+        type: UPDATE_SUPPLIER,
+        payload: res.data,
+      });
+
+      dispatch(setAlert("Product Added", "success"));
+    } catch (err) {
+      dispatch({
+        type: PRODUCT_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
     }
   };
-
-  const body = JSON.stringify({ name, brand, unit });
-
-  try {
-    const res = await axios.post(`/api/supplier/product/${id}`, body, config);
-
-    dispatch({
-      type: UPDATE_SUPPLIER,
-      payload: res.data
-    });
-
-    dispatch(setAlert('Product Added', 'success'));
-  } catch (err) {
-    dispatch({
-      type: PRODUCT_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
-  }
-};

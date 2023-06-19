@@ -74,7 +74,7 @@ const SupplierForm = ({
     } else {
       //createSupplier({ contactName, companyName, email });
 
-      const res = await axios.post('/api/supplier', body, config);
+      const res = await axios.post(`/${API}/supplier', body, config);
       list.unshift(res.data);
       setList(list);
       setAlert('Supplier created', 'success');

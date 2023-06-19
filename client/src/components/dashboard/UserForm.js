@@ -51,7 +51,7 @@ const UserForm = ({
       setAlert('Emails do not match', 'danger');
     } else {
      
-    const res = await axios.post('/api/users/edit', formData, config);
+    const res = await axios.post(`/${API}/users/edit', formData, config);
       setList(res.data);
       setAlert('User edited', 'success');
       toggle(!display);
