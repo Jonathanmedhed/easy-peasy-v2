@@ -8,7 +8,7 @@ connectDB();
 app.use(express.json({ extended: false }));
 // Define Routes
 app.use("/api/users", require("./routes/api/users"));
-app.use(`/${API}/auth`, require("./routes/api/auth"));
+app.use("/api/auth", require("./routes/api/auth"));
 app.use("/api/order", require("./routes/api/order"));
 app.use("/api/supplier", require("./routes/api/suppliers"));
 // Serve static assets in production

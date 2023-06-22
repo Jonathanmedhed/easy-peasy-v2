@@ -15,7 +15,6 @@ import {
   SUPPLIER_ERROR,
   ORDER_ERROR,
 } from "./types";
-import { API } from "../costants";
 
 //Get user
 export const getUser = () => async (dispatch) => {
@@ -42,7 +41,7 @@ export const updateUser = (formData, history) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    const res = await axios.post(`/${API}/users/edit`, formData, config);
+    const res = await axios.post("/api/users/edit", formData, config);
 
     dispatch(setAlert("User Updated", "success"));
     dispatch({
@@ -69,7 +68,7 @@ export const updateUser = (formData, history) => async (dispatch) => {
 //Get user products
 export const getProducts = () => async (dispatch) => {
   try {
-    const res = await axios.get(`/${API}/products`);
+    const res = await axios.get(`/api/products`);
 
     dispatch({
       type: GET_PRODUCTS,
@@ -86,7 +85,7 @@ export const getProducts = () => async (dispatch) => {
 //Get user suppliers
 export const getSuppliers = () => async (dispatch) => {
   try {
-    const res = await axios.get(`${API}/suppliers`);
+    const res = await axios.get(`/api/suppliers`);
 
     dispatch({
       type: GET_SUPPLIERS,
@@ -103,7 +102,7 @@ export const getSuppliers = () => async (dispatch) => {
 //Get user orders
 export const getOrders = () => async (dispatch) => {
   try {
-    const res = await axios.get(`/${API}/orders`);
+    const res = await axios.get(`/api/orders`);
 
     dispatch({
       type: GET_ORDERS,
@@ -120,9 +119,7 @@ export const getOrders = () => async (dispatch) => {
 // Delete product
 export const deleteProduct = (id, product_id) => async (dispatch) => {
   try {
-    const res = await axios.delete(
-      `/${API}/supplier/product/${id}/${product_id}`
-    );
+    const res = await axios.delete(`/api/supplier/product/${id}/${product_id}`);
 
     dispatch({
       type: UPDATE_PRODUCT,
@@ -141,7 +138,7 @@ export const deleteProduct = (id, product_id) => async (dispatch) => {
 // Delete order
 export const deleteOrder = (id) => async (dispatch) => {
   try {
-    const res = await axios.delete(`/${API}/order/${id}`);
+    const res = await axios.delete(`/api/order/${id}`);
 
     dispatch({
       type: UPDATE_ORDER,

@@ -9,7 +9,6 @@ import {
   LOGIN_FAIL,
   LOGOUT,
 } from "./types";
-import { API } from "../costants";
 import setAuthToken from "../utils/setAuthToken";
 
 //Load User
@@ -19,7 +18,7 @@ export const loadUser = () => async (dispatch) => {
   }
 
   try {
-    const res = await axios.get(`/${API}/auth`);
+    const res = await axios.get("/api/auth");
 
     dispatch({
       type: USER_LOADED,
@@ -76,7 +75,7 @@ export const login = (email, password) => async (dispatch) => {
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post(`/${API}/auth`, body, config);
+    const res = await axios.post("/api/auth", body, config);
 
     dispatch({
       type: LOGIN_SUCCESS,

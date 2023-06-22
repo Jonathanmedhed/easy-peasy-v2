@@ -10,7 +10,6 @@ import {
   PRODUCT_ERROR,
   GET_SUPPLIER,
 } from "../actions/types";
-import { API } from "../costants";
 
 // Get supplier
 export const getSupplierById =
@@ -18,7 +17,7 @@ export const getSupplierById =
   async (dispatch) => {
     try {
       console.log("action running");
-      const res = await axios.get(`/${API}/supplier/${id}`);
+      const res = await axios.get(`/api/supplier/${id}`);
       console.log(res.data);
       dispatch({
         type: GET_SUPPLIER,
@@ -45,7 +44,7 @@ export const createSupplier =
     const body = JSON.stringify({ contactName, companyName, email });
 
     try {
-      const res = await axios.post(`/${API}/supplier`, body, config);
+      const res = await axios.post("/api/supplier", body, config);
 
       dispatch({
         type: CREATE_SUPPLIER,
@@ -66,7 +65,7 @@ export const createSupplier =
 // Delete supplier
 export const deleteSupplier = (id) => async (dispatch) => {
   try {
-    const res = await axios.delete(`/${API}/supplier/${id}`);
+    const res = await axios.delete(`/api/supplier/${id}`);
 
     dispatch({
       type: DELETE_SUPPLIER,
@@ -85,9 +84,7 @@ export const deleteSupplier = (id) => async (dispatch) => {
 // Delete product
 export const deleteProduct = (id, product_id) => async (dispatch) => {
   try {
-    const res = await axios.delete(
-      `/${API}/supplier/product/${id}/${product_id}`
-    );
+    const res = await axios.delete(`/api/supplier/product/${id}/${product_id}`);
 
     dispatch({
       type: UPDATE_PRODUCT,
@@ -116,11 +113,7 @@ export const addProduct =
     const body = JSON.stringify({ name, brand, unit });
 
     try {
-      const res = await axios.post(
-        `/${API}/supplier/product/${id}`,
-        body,
-        config
-      );
+      const res = await axios.post(`/api/supplier/product/${id}`, body, config);
 
       dispatch({
         type: UPDATE_SUPPLIER,

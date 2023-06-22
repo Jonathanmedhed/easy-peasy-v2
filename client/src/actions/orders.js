@@ -1,13 +1,12 @@
 import axios from "axios";
 import { setAlert } from "./alerts";
 import { GET_FAVS } from "../actions/types";
-import { API } from "../costants";
 
 // Add product to order
 export const getFavourites = () => async (dispatch) => {
   console.log("get favo running");
   try {
-    const res = await axios.get(`/${API}/order/`);
+    const res = await axios.get(`/api/order/`);
     console.log("try running");
     console.log(res.data);
     dispatch({
@@ -37,7 +36,7 @@ export const addProduct =
 
     try {
       const res = await axios.post(
-        `/${API}/order/product/${id}/${product_id}`,
+        `/api/order/product/${id}/${product_id}`,
         body,
         config
       );
@@ -57,7 +56,7 @@ export const addProduct =
 // unfavourite order
 export const unfavouriteOrder = (id) => async (dispatch) => {
   try {
-    const res = await axios.post(`/${API}/order/${id}/nofav`);
+    const res = await axios.post(`/api/order/${id}/nofav`);
 
     dispatch(setAlert("Order Updated", "success"));
   } catch (err) {
@@ -75,7 +74,7 @@ export const removeProduct =
   async (dispatch) => {
     try {
       const res = await axios.delete(
-        `/${API}/order/product/${order_id}/${product._id}`
+        `/api/order/product/${order_id}/${product._id}`
       );
       console.log(res.data);
       console.log(items);
