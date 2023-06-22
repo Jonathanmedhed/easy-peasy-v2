@@ -1,31 +1,31 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const { check, validationResult } = require('express-validator');
-const auth = require('../../middleware/auth');
-const User = require('../../models/User');
-const Supplier = require('../../models/Supplier');
-const Order = require('../../models/Order');
-const Product = require('../../models/Product');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const { check, validationResult } = require("express-validator");
+const auth = require("../../middleware/auth");
+const User = require("../../models/User");
+const Supplier = require("../../models/Supplier");
+const Order = require("../../models/Order");
+const Product = require("../../models/Product");
 
 // @route GET api/auth
 //  @desc Test route
 // @access public
-router.get('/', auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    const suppliers = await Supplier.find({user: req.user.id});
-    const products = await Product.find({user: req.user.id});
-    const orders = await Order.find({user: req.user.id});
+    const user = await User.findById(req.user.id).select("-password");
+    const suppliers = await Supplier.find({ user: req.user.id });
+    const products = await Product.find({ user: req.user.id });
+    const orders = await Order.find({ user: req.user.id });
     user.suppliers = suppliers;
     user.products = products;
     user.orders = orders;
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 module.exports = router;
@@ -34,10 +34,10 @@ module.exports = router;
 //  @desc Authenticate User & Get Token
 // @access public
 router.post(
-  '/',
+  "/",
   [
-    check('email', 'Please Include a Valid Email').isEmail(),
-    check('password', 'Password is Required').exists()
+    check("email", "Please Include a Valid Email").isEmail(),
+    check("password", "Password is Required").exists(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -52,32 +52,32 @@ router.post(
       if (!user) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
       // Return jsonwebtoken
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        process.env.JWT_SECRET,
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
-          res.json({token});
+          res.json({ token });
         }
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   }
 );
