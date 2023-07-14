@@ -1,40 +1,40 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const OrderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: "user",
   },
   date: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   fav: {
     type: String,
-    default: 'no'
+    default: "no",
   },
   sent: {
     type: Boolean,
-    default: false
+    default: false,
   },
   emails: [
     {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   ],
   products: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'product'
-    }
+      ref: "product",
+    },
   ],
   suppliers: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'supplier'
-    }
-  ]
+      ref: "supplier",
+    },
+  ],
 });
 
-module.exports = Supplier = mongoose.model('order', OrderSchema);
+module.exports = Supplier = mongoose.model("order", OrderSchema);

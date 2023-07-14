@@ -1,14 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const Supplier = require('../../models/Supplier');
-const Product = require('../../models/Product');
-const { check, validationResult } = require('express-validator');
+const auth = require("../../middleware/auth");
+const Supplier = require("../../models/Supplier");
+const Product = require("../../models/Product");
+const { check, validationResult } = require("express-validator");
 
 // @route   Post api/supplier/edit/:id
 // @desc    edit supplier
 // @access  Private
-router.post('/edit/:id', auth, async (req, res) => {
+router.post("/edit/:id", auth, async (req, res) => {
   const { contactName, companyName, email } = req.body;
 
   //Build Supplier Object
@@ -30,25 +30,25 @@ router.post('/edit/:id', auth, async (req, res) => {
     res.json(supplier);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 // @route GET api/supplier
 //  @desc Get authorized user's suppliers
 // @access private
-router.get('/', auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const suppliers = await Supplier.find({
-      user: req.user.id
+      user: req.user.id,
     });
     if (!suppliers) {
-      return res.status(400).json({ msg: 'There are Suppliers for this user' });
+      return res.status(400).json({ msg: "There are Suppliers for this user" });
     }
     res.json(suppliers);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 module.exports = router;
@@ -56,16 +56,16 @@ module.exports = router;
 // @route GET api/supplier/id
 //  @desc Get authorized user's supplier by id
 // @access private
-router.get('/:id', auth, async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   try {
     const supplier = await Supplier.findById(req.params.id);
     if (!supplier) {
-      return res.status(400).json({ msg: 'Supplier Not Found' });
+      return res.status(400).json({ msg: "Supplier Not Found" });
     }
     res.json(supplier);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 module.exports = router;
@@ -73,16 +73,16 @@ module.exports = router;
 // @route GET api/supplier/id/products
 //  @desc Get authorized user's supplier by id
 // @access private
-router.get('/:id/products', auth, async (req, res) => {
+router.get("/:id/products", auth, async (req, res) => {
   try {
     const products = await Product.find({ supplier: req.params.id });
     if (!products) {
-      return res.status(400).json({ msg: 'No products found for this user' });
+      return res.status(400).json({ msg: "No products found for this user" });
     }
     res.json(products);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 module.exports = router;
@@ -91,16 +91,12 @@ module.exports = router;
 // @desc Create a supplier
 // @access public
 router.post(
-  '/',
+  "/",
   auth,
   [
-    check('contactName', 'Contact Name is Required')
-      .not()
-      .isEmpty(),
-    check('companyName', 'Company Name is Required')
-      .not()
-      .isEmpty(),
-    check('email', 'Please include a valid email').isEmail()
+    check("contactName", "Contact Name is Required").not().isEmpty(),
+    check("companyName", "Company Name is Required").not().isEmpty(),
+    check("email", "Please include a valid email").isEmail(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -113,7 +109,7 @@ router.post(
         contactName,
         companyName,
         email,
-        user: req.user.id
+        user: req.user.id,
       });
       const user = await User.findById(req.user.id);
       user.suppliers.unshift(supplier);
@@ -123,7 +119,7 @@ router.post(
       res.json(supplier);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   }
 );
@@ -132,20 +128,14 @@ router.post(
 // @desc    Add product to supplier
 // @access  Private
 router.post(
-  '/product/:id',
+  "/product/:id",
   [
     auth,
     [
-      check('name', 'Name is required')
-        .not()
-        .isEmpty(),
-      check('brand', 'Brand is required')
-        .not()
-        .isEmpty(),
-      check('unit', 'Unit is required')
-        .not()
-        .isEmpty()
-    ]
+      check("name", "Name is required").not().isEmpty(),
+      check("brand", "Brand is required").not().isEmpty(),
+      check("unit", "Unit is required").not().isEmpty(),
+    ],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -155,10 +145,10 @@ router.post(
     try {
       const supplier = await Supplier.findById(req.params.id);
       if (!supplier) {
-        return res.status(404).json({ msg: 'Supplier does not exists' });
+        return res.status(404).json({ msg: "Supplier does not exists" });
       }
       if (supplier.user.toString() !== req.user.id) {
-        return res.status(401).json({ msg: 'User not authorized' });
+        return res.status(401).json({ msg: "User not authorized" });
       }
       product = new Product({
         name: req.body.name,
@@ -166,7 +156,7 @@ router.post(
         unit: req.body.unit,
         user: req.user.id,
         supplier: req.params.id,
-        supplierName: supplier.companyName
+        supplierName: supplier.companyName,
       });
       const user = await User.findById(req.user.id);
       user.products.unshift(product);
@@ -176,10 +166,10 @@ router.post(
       await product.save();
       await supplier.save();
       res.json(supplier.products);
-      console.log('route running')
+      console.log("route running");
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   }
 );
@@ -187,7 +177,7 @@ router.post(
 // @route   POST api/supplier/product/edit/:id/:product_id
 // @desc    Edit product
 // @access  Private
-router.post('/product-edit/:id/:product_id', auth, async (req, res) => {
+router.post("/product-edit/:id/:product_id", auth, async (req, res) => {
   const { name, brand, unit } = req.body;
 
   //Build Supplier Object
@@ -202,13 +192,13 @@ router.post('/product-edit/:id/:product_id', auth, async (req, res) => {
     const supplier = await Supplier.findById(req.params.id);
     const product = await Product.findById(req.params.product_id);
     if (!supplier) {
-      return res.status(404).json({ msg: 'Supplier does not exists' });
+      return res.status(404).json({ msg: "Supplier does not exists" });
     }
     if (!product) {
-      return res.status(404).json({ msg: 'Product does not exists' });
+      return res.status(404).json({ msg: "Product does not exists" });
     }
     if (supplier.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
+      return res.status(401).json({ msg: "User not authorized" });
     }
 
     //Update
@@ -222,22 +212,22 @@ router.post('/product-edit/:id/:product_id', auth, async (req, res) => {
     res.json(productToEdit);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 // @route   DELETE api/supplier/:id
 // @desc    Delete a supplier
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const supplier = await Supplier.findById(req.params.id);
     if (!supplier) {
-      return res.status(404).json({ msg: 'Supplier not found' });
+      return res.status(404).json({ msg: "Supplier not found" });
     }
     //Check user
     if (supplier.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not autorized' });
+      return res.status(401).json({ msg: "User not autorized" });
     }
     //Remove Supplier's products
     await Product.deleteMany({ supplier: req.params.id });
@@ -247,31 +237,31 @@ router.delete('/:id', auth, async (req, res) => {
 
     await user.save();
     await supplier.remove();
-    res.json({ msg: 'supplier removed' });
+    res.json({ msg: "supplier removed" });
   } catch (err) {
     console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'supplier not found' });
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "supplier not found" });
     }
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 // @route   DELETE api/supplier/product/:id/:product_id
 // @desc    Delete a Product from a supplier
 // @access  Private
-router.delete('/product/:id/:product_id', auth, async (req, res) => {
+router.delete("/product/:id/:product_id", auth, async (req, res) => {
   try {
     const supplier = await Supplier.findById(req.params.id);
     //pullout product
     const product = await Product.findById(req.params.product_id);
     //Make sure product exists
     if (!product) {
-      return res.status(404).json({ msg: 'Product does not exist' });
+      return res.status(404).json({ msg: "Product does not exist" });
     }
     // Check user
     if (supplier.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
+      return res.status(401).json({ msg: "User not authorized" });
     }
 
     let user = await User.findById(req.user.id);
@@ -281,9 +271,9 @@ router.delete('/product/:id/:product_id', auth, async (req, res) => {
     await user.save();
     await supplier.save();
     await product.remove();
-    res.json({ msg: 'product removed' });
+    res.json({ msg: "product removed" });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
