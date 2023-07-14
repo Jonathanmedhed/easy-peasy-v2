@@ -10,6 +10,11 @@ dotenv.config();
 connectDB();
 // Init Middleware
 app.use(express.json({ extended: false }));
+// Allow Cross
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 // Define Routes
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/auth", require("./routes/api/auth"));

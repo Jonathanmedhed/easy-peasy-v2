@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
@@ -31,11 +31,20 @@ const App = () => {
     store.dispatch(loadUser());
   }, []);
 
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    fetch("https://easy-peasy.onrender.com")
+      .then((res) => res.json())
+      .then((data) => setMessage(data.message));
+  }, []);
+
   return (
     <Provider store={store}>
       <Router>
         <Fragment>
           <Navbar />
+          <h1>{message}</h1>
           <Route exact path="/" component={Landing} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
